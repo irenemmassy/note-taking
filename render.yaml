@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: note-taking-backend
+    env: node
+    region: singapore  # Choose the region closest to your users
+    plan: free  # Specify the plan
+    buildCommand: cd server && npm install && npm run build
+    startCommand: cd server && node dist/index.js
+    autoDeploy: true  # Enable auto-deployment
+    healthCheckPath: /api/health  # Add health check
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CLIENT_EMAIL
+        sync: false
+      - key: FIREBASE_PRIVATE_KEY
+        sync: false
+      - key: PORT
+        value: 8080
+
+  - type: static
+    name: note-taking-frontend
+    env: static
+    region: singapore  # Choose the region closest to your users
+    buildCommand: cd client && npm install && npm run build
+    publishDir: client/dist
+    autoDeploy: true  # Enable auto-deployment
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://note-taking-backend.onrender.com
+      - key: VITE_FIREBASE_PROJECT_ID
+        sync: false 
