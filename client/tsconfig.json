@@ -18,10 +18,13 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    
+    /* Additional Settings */
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "references": [
-    { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.app.json" }
-  ]
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules"]
 }
