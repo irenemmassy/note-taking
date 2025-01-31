@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { auth } from '../config/firebase';
 
+// Determine the API URL based on environment
+const API_URL = import.meta.env.PROD 
+  ? 'https://note-taking-backend-xr3x.onrender.com/api'
+  : 'http://localhost:5001/api';
+
 const api = axios.create({
-  baseURL: 'http://localhost:5001/api',
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json'
   }

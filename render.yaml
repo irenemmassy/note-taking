@@ -1,4 +1,5 @@
 services:
+  # Backend API Service
   - type: web
     name: note-taking-backend
     env: node
@@ -6,11 +7,12 @@ services:
     plan: free  # Specify the plan
     buildCommand: cd server && npm install && npm run build
     startCommand: cd server && node dist/index.js
-    autoDeploy: true  # Enable auto-deployment
-    healthCheckPath: /api/health  # Add health check
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 8080
       - key: MONGODB_URI
         sync: false
       - key: FIREBASE_PROJECT_ID
@@ -19,16 +21,16 @@ services:
         sync: false
       - key: FIREBASE_PRIVATE_KEY
         sync: false
-      - key: PORT
-        value: 8080
+      - key: GEMINI_API_KEY
+        sync: false
 
+  # Frontend Static Site
   - type: static
-    name: note-taking-frontend
+    name: note-taking
     env: static
-    region: singapore  # Choose the region closest to your users
     buildCommand: cd client && npm install && npm run build
-    publishDir: client/dist
-    autoDeploy: true  # Enable auto-deployment
+    staticPublishPath: client/dist
+    pullRequestPreviewsEnabled: true
     headers:
       - path: /*
         name: Cache-Control
@@ -38,7 +40,15 @@ services:
         source: /*
         destination: /index.html
     envVars:
-      - key: VITE_API_URL
-        value: https://note-taking-backend.onrender.com
+      - key: VITE_FIREBASE_API_KEY
+        sync: false
+      - key: VITE_FIREBASE_AUTH_DOMAIN
+        sync: false
       - key: VITE_FIREBASE_PROJECT_ID
+        sync: false
+      - key: VITE_FIREBASE_STORAGE_BUCKET
+        sync: false
+      - key: VITE_FIREBASE_MESSAGING_SENDER_ID
+        sync: false
+      - key: VITE_FIREBASE_APP_ID
         sync: false 
