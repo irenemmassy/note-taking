@@ -5,7 +5,8 @@ services:
     env: node
     region: singapore  # Choose the region closest to your users
     plan: free  # Specify the plan
-    buildCommand: cd server && npm install && npm run build
+    buildCommand: |
+      cd client && npm install && npm run build && cd ../server && npm install && npm run build
     startCommand: cd server && node dist/index.js
     healthCheckPath: /api/health
     envVars:
@@ -22,6 +23,18 @@ services:
       - key: FIREBASE_PRIVATE_KEY
         sync: false
       - key: GEMINI_API_KEY
+        sync: false
+      - key: VITE_FIREBASE_API_KEY
+        sync: false
+      - key: VITE_FIREBASE_AUTH_DOMAIN
+        sync: false
+      - key: VITE_FIREBASE_PROJECT_ID
+        sync: false
+      - key: VITE_FIREBASE_STORAGE_BUCKET
+        sync: false
+      - key: VITE_FIREBASE_MESSAGING_SENDER_ID
+        sync: false
+      - key: VITE_FIREBASE_APP_ID
         sync: false
 
   # Frontend Static Site

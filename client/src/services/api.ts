@@ -1,10 +1,8 @@
 import axios from 'axios';
 import { auth } from '../config/firebase';
 
-// Determine the API URL based on environment
-const API_URL = import.meta.env.PROD 
-  ? 'https://note-taking-backend-xr3x.onrender.com/api'
-  : 'http://localhost:5001/api';
+// Use relative path for API URL since frontend and backend are served from same domain
+const API_URL = '/api';
 
 const api = axios.create({
   baseURL: API_URL,
